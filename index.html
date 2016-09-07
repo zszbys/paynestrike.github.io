@@ -5,10 +5,19 @@
 </head>
 <body>
     <h1>Hello, this page is served from github</h1>
+
+    <div>
+        <button id="showErrBtn">show error</button>
+    </div>
 </body>
 
 <script type="text/javascript">
-    
+    document.getElementById("showErrBtn").onclick = function(event){
+            window.postMessage("github message", 'https://paynestrike.github.io');
+        }
+        
+        debugger
+        window.parent.testError();
     console.log(window.parent);
 </script>
 </html>
