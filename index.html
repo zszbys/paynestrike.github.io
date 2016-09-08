@@ -13,7 +13,8 @@
 
 <script type="text/javascript">
     document.getElementById("showErrBtn").onclick = function(event){
-            window.parent.postMessage("github message", 'https://c.na35.visual.force.com/');
+            var val = window.parent.postMessage("github message", 'https://c.na35.visual.force.com/');
+            console.log(val)
         }
         
 </script>
