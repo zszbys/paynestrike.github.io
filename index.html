@@ -13,18 +13,17 @@
 
 <script type="text/javascript">
     document.getElementById("showErrBtn").onclick = function(event){
-            var val = window.parent.postMessage("github message", 'https://c.na35.visual.force.com/');
-            console.log(val)
-        }
+        window.parent.postMessage("github message", 'https://c.na35.visual.force.com/');
+    }
         
-     window.addEventListener("message", function(e){
-               if (e.origin !== 'https://c.na35.visual.force.com') {
-              		return; 
-               }
+    window.addEventListener("message", function(e){
+        if (e.origin !== 'https://c.na35.visual.force.com') {
+              return; 
+        }
                 
-               alert("Message received from domain "+ e.origin);
+        alert("Message received from domain "+ e.origin);
               
-            });
+    });
         
 </script>
 </html>
