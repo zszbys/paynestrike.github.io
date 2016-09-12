@@ -1,11 +1,10 @@
 (function(){
-    alert(1111)
     var message = {};
     message.host = "https://c.na35.visual.force.com/";
     message.data = {};
     message.stack = [];
 
-    message.sendToHost(msg, callback){
+    message.sendToHost = function(msg, callback){
         var id = (new Date()).getTime()+'';
         var stack = {id:id, callback:callback};
         message.stack.push(stack);
