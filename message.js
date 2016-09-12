@@ -41,7 +41,7 @@
             }
         }
 
-        stack.splic(i,1);
+        stack.splice(i,1);
     }
 
     function runCallback(err, data){
