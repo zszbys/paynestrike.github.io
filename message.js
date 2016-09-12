@@ -1,5 +1,5 @@
 (function(){
-    
+    alert(1111)
     var message = {};
     message.host = "https://c.na35.visual.force.com/";
     message.data = {};
