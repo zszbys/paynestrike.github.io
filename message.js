@@ -23,9 +23,9 @@
     }
 
     function getStack(id){
-        for (var i = message.length - 1; i >= 0; i--) {
-            if(message[i].id === id){
-                return message[i].callback;
+        for (var i = message.stack.length - 1; i >= 0; i--) {
+            if(message.stack[i].id === id){
+                return message.stack[i].callback;
             }
         }
     }
@@ -58,6 +58,10 @@
         removeStack(id);
               
     });
+<<<<<<< HEAD
     // expose message to window
     window.message = message;
 }())
+=======
+}())
+>>>>>>> 6db495f329455758576a9d1e5380d461cf4856cd
