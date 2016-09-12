@@ -22,9 +22,9 @@
     }
 
     function getStack(id){
-        for (var i = message.length - 1; i >= 0; i--) {
-            if(message[i].id === id){
-                return message[i].callback;
+        for (var i = message.stack.length - 1; i >= 0; i--) {
+            if(message.stack[i].id === id){
+                return message.stack[i].callback;
             }
         }
     }
