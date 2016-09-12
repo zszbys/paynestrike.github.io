@@ -17,8 +17,8 @@
         try{
             targetWindow.postMessage(data, host);
         }catch(e){
-             removeStack(data.id);
-             alert("Erroe : " + e.name + "\nmessage : " + e.message);
+            runCallback(e, data);
+            alert("Erroe : " + e.name + "\nmessage : " + e.message);
         }
     }
 
@@ -44,18 +44,21 @@
         stack.splic(i,1);
     }
 
+    function runCallback(err, data){
+        var id = data.id;
+        var callback = getStack(id);
+        if (Object.prototype.toString.call(callback) === "[object Function]"){
+            callback(err, data.msg);
+            removeStack(id);
+        }
+    }
+
     window.addEventListener("message", function(e){
         if (e.origin !== message.host) {
               return; 
         }
         
-        var id = e.data.id;
-
-        var callback = getStack(id);
-        if (Object.prototype.toString.call(callback) === "[object Function]"){
-            callback(e.data.msg);
-        }
-        removeStack(id);
+        runCallback(null, e.data);
               
     });
     // expose message to window
