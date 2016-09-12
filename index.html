@@ -10,20 +10,28 @@
         <button id="showErrBtn">show error</button>
     </div>
 </body>
-
+<script type="text/javascript" src="./message.js"></script>
 <script type="text/javascript">
     document.getElementById("showErrBtn").onclick = function(event){
-        window.parent.postMessage("github message", 'https://c.na35.visual.force.com/');
+        // window.parent.postMessage("github message", 'https://c.na35.visual.force.com/');
+        message.sendToHost({name:"delayCallback"}, function(err, result){
+            if(err){
+                alert("Error : "+err.toString());
+                return;
+            }
+
+            alert('Success : ' +result)
+        })
     }
         
-    window.addEventListener("message", function(e){
-        if (e.origin !== 'https://c.na35.visual.force.com') {
-              return; 
-        }
+    // window.addEventListener("message", function(e){
+    //     if (e.origin !== 'https://c.na35.visual.force.com') {
+    //           return; 
+    //     }
                 
-        alert("Message received from domain "+ e.origin);
+    //     alert("Message received from domain "+ e.origin);
               
-    });
+    // });
         
 </script>
 </html>
