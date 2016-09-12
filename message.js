@@ -58,10 +58,6 @@
         removeStack(id);
               
     });
-<<<<<<< HEAD
     // expose message to window
     window.message = message;
 }())
-=======
-}())
->>>>>>> 6db495f329455758576a9d1e5380d461cf4856cd
