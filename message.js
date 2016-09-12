@@ -38,7 +38,7 @@
         var id = e.data.id;
 
         var callback = getStack(id);
-        if (Object.toString.call(callback) === "object Function"){
+        if (Object.prototype.toString.call(callback) === "object Function"){
             callback(e.data.msg);
         }
               
