@@ -1,6 +1,6 @@
 (function(){
     var message = {};
-    message.host = "https://c.na35.visual.force.com/";
+    message.host = "https://c.na35.visual.force.com";
     message.data = {};
     message.stack = [];
 
@@ -31,7 +31,6 @@
 
     window.message = message;
     window.addEventListener("message", function(e){
-        debugger
         if (e.origin !== message.host) {
               return; 
         }
