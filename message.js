@@ -31,6 +31,7 @@
 
     window.message = message;
     window.addEventListener("message", function(e){
+        debugger
         if (e.origin !== message.host) {
               return; 
         }
