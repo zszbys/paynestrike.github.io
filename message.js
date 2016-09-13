@@ -62,7 +62,7 @@
         }
     }
 
-    function callApi(option){
+    function callApi(option, callback){
         var data = option.data;
         var api = data.api;
         var apiArg = data.args;
@@ -74,7 +74,7 @@
 
         seismicapi[api](function(err, res){
             var data = err || res;
-            postToHost(data);
+            postToHost(data, callback);
         });
     }
 
