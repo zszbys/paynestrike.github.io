@@ -5,12 +5,20 @@
     message.stack = [];
 
     message.sendToHost = function(msg, callback){
-        var id = (new Date()).getTime()+'';
-        var stack = {id:id, callback:callback};
-        message.stack.push(stack);
-        message.data.msg = msg;
-        message.data.id = id;
-        send(window.parent, message.data, message.host);
+        if(!msg.id){
+            var id = (new Date()).getTime()+'';
+            var stack = {id:id, callback:callback};
+            message.stack.push(stack); 
+            var data = {msg:msg, id:id};
+        }else{
+            var data = msg;
+        }
+        
+        send(window.parent, stringifyJSON(data), message.host);
+    }
+
+    function stringifyJSON(obj){
+        return JSON>stringify(obj);
     }
 
     function postToHost(msg, callback){
@@ -62,10 +70,11 @@
         }
     }
 
-    function callApi(option, callback){
+    function callApi(option){
         var data = option.data;
         var api = data.api;
         var apiArg = data.args;
+        var id = data.id;
 
         if (!seismicapi[api]) {
             postToHost("unknown api");
@@ -73,8 +82,9 @@
         }
 
         seismicapi[api](function(err, res){
-            var data = err || res;
-            postToHost(data, callback);
+            var response = err || res;
+            response.id = id;
+            postToHost(data);
         });
     }
 
