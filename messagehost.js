@@ -7,7 +7,7 @@
     child.domain = "https://paynestrike.github.io";
     child.iframe = document.getElementById('receiver').contentWindow;
 
-    postToIframe = function(args, callback){
+    function postToIframe(args, callback){
         var id = (new Date()).getTime()+'';
         var stack = {id:id, callback:callback};
         message.stack.push(stack);
@@ -15,7 +15,6 @@
             data:args,
             id:id
         }
-        var d = JSON.stringify(data);
         _postToIframe(JSON.stringify(data), child.domain);
     }
 
@@ -50,11 +49,11 @@
         stack.splice(i,1);
     }
 
-    function runCallback(err, data){
+    function runCallback(data){
         var id = data.id;
         var callback = getStack(id);
         if (Object.prototype.toString.call(callback) === "[object Function]"){
-            callback(err, data.msg);
+            callback(data.error, data.res);
             removeStack(id);
         }
     }
@@ -66,7 +65,7 @@
 
         var data = JSON.parse(e.data);
         
-        runCallback(null, data);
+        runCallback(data);
               
     });
 

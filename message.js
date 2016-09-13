@@ -22,12 +22,6 @@
     }
 
     function postToHost(msg, callback){
-        // var id = (new Date()).getTime()+'';
-        // var stack = {id:id, callback:callback};
-        // message.stack.push(stack);
-        // message.data.msg = msg;
-        // message.data.id = id;
-        // send(window.parent, message.data, message.host);
         if(!msg.id){
             var id = (new Date()).getTime()+'';
             var stack = {id:id, callback:callback};
@@ -81,10 +75,17 @@
     }
 
     function callApi(option){
+        // option = {
+        //     data:{
+        //         api:""
+        //         args:{}
+        //     },
+        //     id:""
+        // }
         var data = option.data;
+        var id = option.id;
         var api = data.api;
         var apiArg = data.args;
-        var id = option.id;
 
         if (!seismicapi[api]) {
             postToHost("unknown api");
@@ -92,8 +93,11 @@
         }
 
         seismicapi[api](function(err, res){
-            var response = err || res;
-            response.id = id;
+            var response = {
+                error:err,
+                res:res,
+                id:id
+            };
             postToHost(response);
         });
     }
