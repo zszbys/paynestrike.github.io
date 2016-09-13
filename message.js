@@ -168,7 +168,7 @@
             api: apiName
         };
         var cb = null;
-        if (isObject(postData)) {
+        if (isObject(postData) || isString(postData)) {
             data.args = postData;
         }
         if (isFunc(postData) && !callback) {
