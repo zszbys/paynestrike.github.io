@@ -84,7 +84,7 @@
         var data = option.data;
         var api = data.api;
         var apiArg = data.args;
-        var id = data.id;
+        var id = option.id;
 
         if (!seismicapi[api]) {
             postToHost("unknown api");
