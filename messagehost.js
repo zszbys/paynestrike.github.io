@@ -19,7 +19,7 @@
 
     function postMessage(data, host){
         try{
-            child.iframe.postMessage(data, host);
+            document.getElementById('receiver').contentWindow.postMessage(data, host);
         }catch(e){
             runCallback(e, data);
             alert("Erroe : " + e.name + "\nmessage : " + e.message);
