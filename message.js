@@ -144,7 +144,7 @@
             // call api and post back result
             _callApi(data);
         } else {
-            runCallback(null, data);
+            runCallback(data);
         }
 
     });
