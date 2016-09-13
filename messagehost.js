@@ -19,7 +19,8 @@
 
     function _postToIframe(data, host){
         try{
-            document.getElementById('receiver').contentWindow.postMessage(data, host);
+            var receiver = document.getElementById("receiver").contentWindow;
+            receiver.postMessage(data, host);
         }catch(e){
             runCallback(e, data);
             alert("Erroe : " + e.name + "\nmessage : " + e.message);
