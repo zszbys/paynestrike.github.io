@@ -74,7 +74,7 @@
 
         seismicapi[api](function(err, res){
             var data = err || res;
-            postMessage(data);
+            postToHost(data);
         });
     }
 
