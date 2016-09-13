@@ -101,7 +101,7 @@
         
         var data = parseJSONString(e.data);
         var eventId = data.id;
-        if(isSender(eventId)){
+        if(!isSender(eventId)){
             // call api and post back result
             callApi(data);
         }else{
