@@ -1,6 +1,6 @@
 (function() {
     var message = {};
-    message.host = "https://c.na35.visual.force.com";
+    message.host = "wwwwwwwwwwwwwwwwww";
     message.stack = [];
 
     function stringifyJSON(obj) {
