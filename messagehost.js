@@ -67,15 +67,15 @@
     });
 
     function isString(str){
-        return Object.prototype.toSting.call(str) === "[object String]";
+        return Object.prototype.toString.call(str) === "[object String]";
     }
 
     function isFunc(func){
-        return Object.prototype.toSting.call(func) === "[object Function]";
+        return Object.prototype.toString.call(func) === "[object Function]";
     }
 
     function isObject(obj){
-        return Object.prototype.toSting.call(obj) === "[object Otring]";
+        return Object.prototype.toString.call(obj) === "[object Otring]";
     }
 
 
