@@ -22,12 +22,22 @@
     }
 
     function postToHost(msg, callback){
-        var id = (new Date()).getTime()+'';
-        var stack = {id:id, callback:callback};
-        message.stack.push(stack);
-        message.data.msg = msg;
-        message.data.id = id;
-        send(window.parent, message.data, message.host);
+        // var id = (new Date()).getTime()+'';
+        // var stack = {id:id, callback:callback};
+        // message.stack.push(stack);
+        // message.data.msg = msg;
+        // message.data.id = id;
+        // send(window.parent, message.data, message.host);
+        if(!msg.id){
+            var id = (new Date()).getTime()+'';
+            var stack = {id:id, callback:callback};
+            message.stack.push(stack); 
+            var data = {msg:msg, id:id};
+        }else{
+            var data = msg;
+        }
+        
+        send(window.parent, stringifyJSON(data), message.host);
     }
 
     function send(targetWindow, data, host){
