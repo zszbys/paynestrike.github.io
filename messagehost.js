@@ -14,12 +14,12 @@
         message.stack.push(stack);
         message.data.msg = msg;
         message.data.id = id;
-        postMessage(child.iframe, message.data, child.domain);
+        postMessage(message.data, child.domain);
     }
 
-    function postMessage(targetWindow, data, host){
+    function postMessage(data, host){
         try{
-            targetWindow.postMessage(data, host);
+            child.iframe.postMessage(data, host);
         }catch(e){
             runCallback(e, data);
             alert("Erroe : " + e.name + "\nmessage : " + e.message);
