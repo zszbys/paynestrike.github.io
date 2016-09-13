@@ -18,7 +18,7 @@
     }
 
     function stringifyJSON(obj){
-        return JSON>stringify(obj);
+        return JSON.stringify(obj);
     }
 
     function postToHost(msg, callback){
@@ -94,7 +94,7 @@
         seismicapi[api](function(err, res){
             var response = err || res;
             response.id = id;
-            postToHost(data);
+            postToHost(response);
         });
     }
 
