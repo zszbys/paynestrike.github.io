@@ -96,10 +96,10 @@
         if (!isString(apiName)) {
             throw 'apiName must be a string';
         }
-        var data = {api:apiName, data:postData};
+        var data = {api:apiName};
         var cb = null;
         if (isObject(postData)){
-            data = postData;
+            data.args = postData;
         }
         if (isFunc(postData) && !callback) {
             cb = postData

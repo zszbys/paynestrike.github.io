@@ -63,8 +63,9 @@
     }
 
     function callApi(option){
-        var api = option.api;
-        var apiArg = option.data;
+        var data = option.data;
+        var api = data.api;
+        var apiArg = data.args;
 
         if (!seismicapi[api]) {
             postToHost("unknown api");
