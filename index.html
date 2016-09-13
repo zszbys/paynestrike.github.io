@@ -10,6 +10,11 @@
         <div>This button call host showErrorMessage api to show an error modal dailog in host</div>
         <button id="showErrBtn">Call host showErrorMessage api</button>
     </div>
+
+    <div>
+        <div>Simulate confirm action</div>
+        <button id="confirmBtn">Confirm</button>
+    </div>
 </body>
 <script type="text/javascript" src="./SeismicApi.js"></script>
 <script type="text/javascript" src="./SeismicMessage.js"></script>
@@ -17,6 +22,20 @@
     document.getElementById("showErrBtn").onclick = function(event){
         var message = "this error message is passed from iframe and showed in iframe container";
         Host.callApi('showErrorMessage',message);
+    }
+
+    document.getElementById("confirmBtn").onclick = function(event){
+        var message = "Are you sure?";
+        var that = this;
+        that.text = "......"
+        Host.callApi('confirm',message, function(err, res){
+            if(err){
+                alert('Error');
+                console.log(err);
+                return;
+            }
+            that.text = res.text;
+        });
     }
         
 </script>
