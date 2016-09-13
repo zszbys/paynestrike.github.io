@@ -63,8 +63,10 @@
         if (e.origin !== child.domain) {
               return; 
         }
+
+        var data = JSON.parse(e.data);
         
-        runCallback(null, e.data);
+        runCallback(null, data);
               
     });
 
