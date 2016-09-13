@@ -13,6 +13,15 @@
         send(window.parent, message.data, message.host);
     }
 
+    function postToHost(msg, callback){
+        var id = (new Date()).getTime()+'';
+        var stack = {id:id, callback:callback};
+        message.stack.push(stack);
+        message.data.msg = msg;
+        message.data.id = id;
+        send(window.parent, message.data, message.host);
+    }
+
     function send(targetWindow, data, host){
         try{
             targetWindow.postMessage(data, host);
@@ -53,12 +62,46 @@
         }
     }
 
+    function callApi(option){
+        var api = option.api;
+        var apiArg = option.data;
+
+        if (!seismicapi[api]) {
+            postToHost("unknown api");
+            return;
+        }
+
+        seismicapi[api](function(err, res){
+            var data = err || res;
+            postMessage(data);
+        });
+    }
+
+    // if event id exsit in stack
+    function isSender(id){
+        for (var i = message.stack.length - 1; i >= 0; i--) {
+            if(message.stack[i].id === id){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // must handle two situation
+    // 1 get host api call response
+    // 2 send app api call response
     window.addEventListener("message", function(e){
         if (e.origin !== message.host) {
               return; 
         }
         
-        runCallback(null, e.data);
+        var eventId = e.data.id;
+        if(isSender(eventId)){
+            // call api and post back result
+            callApi(e.data);
+        }else{
+            runCallback(null, e.data);
+        }
               
     });
     // expose message to window

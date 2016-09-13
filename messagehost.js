@@ -8,16 +8,16 @@
     child.domain = "https://paynestrike.github.io";
     child.iframe = document.getElementById('receiver').contentWindow;
 
-    message.sendToChild = function(msg, callback){
+    postToIframe = function(msg, callback){
         var id = (new Date()).getTime()+'';
         var stack = {id:id, callback:callback};
         message.stack.push(stack);
         message.data.msg = msg;
         message.data.id = id;
-        send(child.iframe, message.data, child.domain);
+        postMessage(child.iframe, message.data, child.domain);
     }
 
-    function send(targetWindow, data, host){
+    function postMessage(targetWindow, data, host){
         try{
             targetWindow.postMessage(data, host);
         }catch(e){
@@ -65,6 +65,52 @@
         runCallback(null, e.data);
               
     });
-    // expose message to window
-    window.message = message;
+
+    function isString(str){
+        return Object.prototype.toSting.call(str) === "[object String]";
+    }
+
+    function isFunc(func){
+        return Object.prototype.toSting.call(func) === "[object Function]";
+    }
+
+    function isObject(obj){
+        return Object.prototype.toSting.call(obj) === "[object Otring]";
+    }
+
+
+    var seismic = {};
+
+    /*
+     * apiName non option
+     * postData optional
+     * callback optional
+    */
+
+    seismic.callApi = function(apiName, postData, callback){
+        if (!apiName) {
+            throw 'require apiName';
+        }
+        if (!isString(apiName)) {
+            throw 'apiName must be a string';
+        }
+        var data = {api:apiName, data:postData};
+        var cb = null;
+        if (isObject(postData)){
+            data = postData;
+        }
+        if (isFunc(postData) && !callback) {
+            cb = postData
+        }
+        if (isFunc(callback)) {
+            cb = callback
+        }
+
+        postToIframe(data, cb);
+
+    }
+
+
+    window.Seismic = seismic;
+
 }())
