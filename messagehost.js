@@ -21,7 +21,7 @@
 
     function _postToIframe(data, host){
         try{
-            child.iframe.postMessage("data", host);
+            child.iframe.postMessage(data, host);
         }catch(e){
             runCallback(e, data);
             alert("Erroe : " + e.name + "\nmessage : " + e.message);
