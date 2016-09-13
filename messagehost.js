@@ -14,10 +14,10 @@
         message.stack.push(stack);
         message.data.msg = msg;
         message.data.id = id;
-        postMessage(message.data, child.domain);
+        _postToIframe(message.data, child.domain);
     }
 
-    function postMessage(data, host){
+    function _postToIframe(data, host){
         try{
             document.getElementById('receiver').contentWindow.postMessage(data, host);
         }catch(e){
