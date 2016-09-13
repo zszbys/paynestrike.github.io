@@ -7,13 +7,13 @@
     child.domain = "https://paynestrike.github.io";
     child.iframe = document.getElementById('receiver').contentWindow;
 
-    function stringifyJSON(obj){
+    function stringifyJSON(obj) {
         // TO DO 
         // Json stringify browser support
         return JSON.stringify(obj);
     }
 
-    function parseJSON(jstr){
+    function parseJSON(jstr) {
         return JSON.parse(jstr);
     }
 
@@ -30,16 +30,21 @@
     }
 
     function postToIframe(args, callback) {
-        var id = (new Date()).getTime() + '';
-        var stack = {
-            id: id,
-            callback: callback
-        };
-        message.stack.push(stack);
-        var data = {
-            data: args,
-            id: id
+        if (!args.id) {
+            var id = (new Date()).getTime() + '';
+            var stack = {
+                id: id,
+                callback: callback
+            };
+            message.stack.push(stack);
+            var data = {
+                data: args,
+                id: id
+            }
+        }else{
+            var data = args;
         }
+
         _postToIframe(JSON.stringify(data), child.domain);
     }
 
@@ -83,9 +88,9 @@
     }
 
     // if event id exsit in stack
-    function isSender(id){
+    function isSender(id) {
         for (var i = message.stack.length - 1; i >= 0; i--) {
-            if(message.stack[i].id === id){
+            if (message.stack[i].id === id) {
                 return true;
             }
         }
@@ -93,7 +98,7 @@
     }
 
 
-    function _callApi(option){
+    function _callApi(option) {
         // option = {
         //     data:{
         //         api:""
@@ -107,18 +112,20 @@
         var apiArg = data.args;
 
         var response = {
-            error:null,
-            res:null,
-            id:id
+            error: null,
+            res: null,
+            id: id
         };
 
         if (!HostApi[api]) {
-            response.error = {message:"unknown api"}
+            response.error = {
+                message: "unknown api"
+            }
             postToIframe(response);
             return;
         }
 
-        HostApi[api](apiArg, function(err, res){
+        HostApi[api](apiArg, function(err, res) {
             response.error = err;
             response.res = res;
             postToIframe(response);
@@ -132,10 +139,10 @@
 
         var data = parseJSON(e.data);
         var eventId = data.id;
-        if(!isSender(eventId)){
+        if (!isSender(eventId)) {
             // call api and post back result
             _callApi(data);
-        }else{
+        } else {
             runCallback(null, data);
         }
 

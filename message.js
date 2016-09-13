@@ -25,8 +25,8 @@
         return Object.prototype.toString.call(obj) === "[object Otring]";
     }
 
-    function postToHost(msg, callback) {
-        if (!msg.id) {
+    function postToHost(args, callback) {
+        if (!args.id) {
             var id = (new Date()).getTime() + '';
             var stack = {
                 id: id,
@@ -34,11 +34,11 @@
             };
             message.stack.push(stack);
             var data = {
-                msg: msg,
+                data: args,
                 id: id
             };
         } else {
-            var data = msg;
+            var data = args;
         }
 
         _postToHost(stringifyJSON(data), message.host);
@@ -75,11 +75,11 @@
         stack.splice(i, 1);
     }
 
-    function runCallback(err, data) {
+    function runCallback(data) {
         var id = data.id;
         var callback = getStackCallback(id);
         if (Object.prototype.toString.call(callback) === "[object Function]") {
-            callback(err, data.msg);
+            callback(data.error, data.res);
             removeStack(id);
         }
     }
