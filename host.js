@@ -1,31 +1,14 @@
 (function() {
 
-    var child = {};
-    child.domain = "https://paynestrike.github.io";
-    child.iframe = document.getElementById('receiver').contentWindow;
+    document.getElementById("hostBtn").onclick = function(e) {
+        message.sendToChild({}, function(err, res){
+            if (err) {
+                alert("Error : " + err.toString());
+                return
+            }
 
-
-    function sendToChild(data) {
-        child.iframe.postMessage(data, child.domain);
+            alert("Success : " + res.toString());
+        })
     }
-
-    window.addEventListener("message", function(e) {
-        if (e.origin !== child.domain) {
-            return;
-        }
-
-        // do business logic
-
-        setTimeout(function() {
-            // send callback message event
-            var messageId = e.data.id;
-            var data = {
-                id: messageId,
-                msg: 'test message'
-            };
-            sendToChild(data);
-        },3000)
-
-    });
 
 }())
