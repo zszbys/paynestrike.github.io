@@ -10,13 +10,13 @@
 
     api.confirm = function(message, callback){
         var confirmDailog = document.getElementById('confirm');
-        confirmDailog.display = 'block';
+        confirmDailog.style.display = 'block';
         document.getElementById('confirm-cancel').onclick = function(event){
-            confirmDailog.display = 'none';
+            confirmDailog.style.display = 'none';
             callback(null, {text:'cancel'})
         }
         document.getElementById('confirm-ok').onclick = function(event){
-            confirmDailog.display = 'none';
+            confirmDailog.style.display = 'none';
             callback(null, {text:'confirm'})
         }
     }
