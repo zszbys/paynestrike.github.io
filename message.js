@@ -1,24 +1,16 @@
 (function(){
     var message = {};
     message.host = "https://c.na35.visual.force.com";
-    message.data = {};
     message.stack = [];
 
-    message.sendToHost = function(msg, callback){
-        if(!msg.id){
-            var id = (new Date()).getTime()+'';
-            var stack = {id:id, callback:callback};
-            message.stack.push(stack); 
-            var data = {msg:msg, id:id};
-        }else{
-            var data = msg;
-        }
-        
-        send(window.parent, stringifyJSON(data), message.host);
+    function stringifyJSON(obj){
+        // TO DO 
+        // Json stringify browser support
+        return JSON.stringify(obj);
     }
 
-    function stringifyJSON(obj){
-        return JSON.stringify(obj);
+    function parseJSON(jstr){
+        return JSON.parse(jstr);
     }
 
     function postToHost(msg, callback){
@@ -31,19 +23,19 @@
             var data = msg;
         }
         
-        send(window.parent, stringifyJSON(data), message.host);
+        _postToHost(stringifyJSON(data), message.host);
     }
 
-    function send(targetWindow, data, host){
+    function _postToHost(data, host){
         try{
-            targetWindow.postMessage(data, host);
+            window.parent.postMessage(data, host);
         }catch(e){
             runCallback(e, data);
             alert("Erroe : " + e.name + "\nmessage : " + e.message);
         }
     }
 
-    function getStack(id){
+    function getStackCallback(id){
         for (var i = message.stack.length - 1; i >= 0; i--) {
             if(message.stack[i].id === id){
                 return message.stack[i].callback;
@@ -67,7 +59,7 @@
 
     function runCallback(err, data){
         var id = data.id;
-        var callback = getStack(id);
+        var callback = getStackCallback(id);
         if (Object.prototype.toString.call(callback) === "[object Function]"){
             callback(err, data.msg);
             removeStack(id);
@@ -87,17 +79,21 @@
         var api = data.api;
         var apiArg = data.args;
 
+        var response = {
+            error:null,
+            res:null,
+            id:id
+        };
+
         if (!seismicapi[api]) {
-            postToHost("unknown api");
+            response.error = {message:"unknown api"}
+            postToHost(response);
             return;
         }
 
-        seismicapi[api](function(err, res){
-            var response = {
-                error:err,
-                res:res,
-                id:id
-            };
+        seismicapi[api](apiArg, function(err, res){
+            response.error = err;
+            response.res = res;
             postToHost(response);
         });
     }
@@ -112,9 +108,7 @@
         return false;
     }
 
-    function parseJSONString(jstr){
-        return JSON.parse(jstr);
-    }
+    
 
     // must handle two situation
     // 1 get host api call response
@@ -124,7 +118,7 @@
               return; 
         }
         
-        var data = parseJSONString(e.data);
+        var data = parseJSON(e.data);
         var eventId = data.id;
         if(!isSender(eventId)){
             // call api and post back result

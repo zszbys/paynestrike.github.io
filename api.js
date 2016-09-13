@@ -1,7 +1,7 @@
 (function(){
     var api = {};
 
-    api.getUserInfo = function(callback){
+    api.getUserInfo = function(arg, callback){
         setTimeout(function(){
             var userInfo = {name:'dexter',profile:['default', 'sales']};
             callback(null, userInfo);
