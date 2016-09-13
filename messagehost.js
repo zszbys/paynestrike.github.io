@@ -7,6 +7,15 @@
     child.domain = "https://paynestrike.github.io";
     child.iframe = document.getElementById('receiver').contentWindow;
 
+    function stringifyJSON(obj){
+        // TO DO 
+        // Json stringify browser support
+        return JSON.stringify(obj);
+    }
+
+    function parseJSON(jstr){
+        return JSON.parse(jstr);
+    }
 
     function isString(str) {
         return Object.prototype.toString.call(str) === "[object String]";
@@ -73,14 +82,62 @@
         }
     }
 
+    // if event id exsit in stack
+    function isSender(id){
+        for (var i = message.stack.length - 1; i >= 0; i--) {
+            if(message.stack[i].id === id){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    function _callApi(option){
+        // option = {
+        //     data:{
+        //         api:""
+        //         args:{}
+        //     },
+        //     id:""
+        // }
+        var data = option.data;
+        var id = option.id;
+        var api = data.api;
+        var apiArg = data.args;
+
+        var response = {
+            error:null,
+            res:null,
+            id:id
+        };
+
+        if (!HostApi[api]) {
+            response.error = {message:"unknown api"}
+            postToIframe(response);
+            return;
+        }
+
+        HostApi[api](apiArg, function(err, res){
+            response.error = err;
+            response.res = res;
+            postToIframe(response);
+        });
+    }
+
     window.addEventListener("message", function(e) {
         if (e.origin !== child.domain) {
             return;
         }
 
-        var data = JSON.parse(e.data);
-
-        runCallback(data);
+        var data = parseJSON(e.data);
+        var eventId = data.id;
+        if(!isSender(eventId)){
+            // call api and post back result
+            _callApi(data);
+        }else{
+            runCallback(null, data);
+        }
 
     });
 

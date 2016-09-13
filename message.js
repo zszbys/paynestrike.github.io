@@ -66,7 +66,7 @@
         }
     }
 
-    function callApi(option){
+    function _callApi(option){
         // option = {
         //     data:{
         //         api:""
@@ -122,12 +122,45 @@
         var eventId = data.id;
         if(!isSender(eventId)){
             // call api and post back result
-            callApi(data);
+            _callApi(data);
         }else{
             runCallback(null, data);
         }
               
     });
-    // expose message to window
-    window.message = message;
+    
+    var host = {};
+
+    /*
+     * apiName non option
+     * postData optional
+     * callback optional
+     */
+
+    host.callApi = function(apiName, postData, callback) {
+        if (!apiName) {
+            throw 'require apiName';
+        }
+        if (!isString(apiName)) {
+            throw 'apiName must be a string';
+        }
+        var data = {
+            api: apiName
+        };
+        var cb = null;
+        if (isObject(postData)) {
+            data.args = postData;
+        }
+        if (isFunc(postData) && !callback) {
+            cb = postData
+        }
+        if (isFunc(callback)) {
+            cb = callback
+        }
+
+        postToHost(data, cb);
+
+    }
+
+    window.Host = host;
 }())

@@ -14,15 +14,8 @@
 <script type="text/javascript" src="./message.js"></script>
 <script type="text/javascript">
     document.getElementById("showErrBtn").onclick = function(event){
-        // window.parent.postMessage("github message", 'https://c.na35.visual.force.com/');
-        message.sendToHost({name:"delayCallback"}, function(err, result){
-            if(err){
-                alert("Error : "+err.toString());
-                return;
-            }
-
-            alert('Success : ' +result)
-        })
+        var message = "this error message is passed from iframe and showed in iframe container";
+        Host.callApi('showErrorMessage',message);
     }
         
 </script>
