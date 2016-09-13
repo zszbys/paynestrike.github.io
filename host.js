@@ -20,6 +20,7 @@
     document.getElementById("errorBtn").onclick = function(e) {
         Seismic.callApi('nonExsitApi', function(err, res){
             if(err){
+                console.log(err);
                 alert("Error : "+err.toString());
                 return;
             }
