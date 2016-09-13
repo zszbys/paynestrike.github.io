@@ -1,26 +1,27 @@
 (function(){
     var message = {};
     message.host = "https://c.na35.visual.force.com";
-    message.data = {};
     message.stack = [];
 
     var child = {};
     child.domain = "https://paynestrike.github.io";
     child.iframe = document.getElementById('receiver').contentWindow;
 
-    postToIframe = function(msg, callback){
+    postToIframe = function(args, callback){
         var id = (new Date()).getTime()+'';
         var stack = {id:id, callback:callback};
         message.stack.push(stack);
-        message.data.msg = msg;
-        message.data.id = id;
-        _postToIframe(message.data, child.domain);
+        var data = {
+            data:args,
+            id:id
+        }
+        var d = JSON.stringify(data);
+        _postToIframe(JSON.stringify(data), child.domain);
     }
 
     function _postToIframe(data, host){
         try{
-            var receiver = document.getElementById("receiver").contentWindow;
-            receiver.postMessage("data", host);
+            child.iframe.postMessage("data", host);
         }catch(e){
             runCallback(e, data);
             alert("Erroe : " + e.name + "\nmessage : " + e.message);
