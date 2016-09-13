@@ -20,7 +20,7 @@
     function _postToIframe(data, host){
         try{
             var receiver = document.getElementById("receiver").contentWindow;
-            receiver.postMessage(data, host);
+            receiver.postMessage("data", host);
         }catch(e){
             runCallback(e, data);
             alert("Erroe : " + e.name + "\nmessage : " + e.message);
