@@ -87,6 +87,10 @@
         return false;
     }
 
+    function parseJSONString(jstr){
+        return JSON.parse(jstr);
+    }
+
     // must handle two situation
     // 1 get host api call response
     // 2 send app api call response
@@ -95,12 +99,13 @@
               return; 
         }
         
-        var eventId = e.data.id;
+        var data = parseJSONString(e.data);
+        var eventId = data.id;
         if(isSender(eventId)){
             // call api and post back result
-            callApi(e.data);
+            callApi(data);
         }else{
-            runCallback(null, e.data);
+            runCallback(null, data);
         }
               
     });
